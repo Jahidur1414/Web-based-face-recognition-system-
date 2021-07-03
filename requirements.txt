@@ -1,0 +1,10 @@
+numpy
+Flask
+Werkzeug
+tensorflow==2.5.0
+opencv_python
+xlwt
+pandas
+imutils
+xlsxwriter
+mtcnn

@@ -1,0 +1,31 @@
+.title {
+    color: black;
+    text-decoration: none;
+}
+
+.title:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.coverphotodiv{
+    width: 100%;
+    position: fixed;
+    margin-top: 120px;
+    z-index: -1;
+}
+.coverphoto {
+    float: right;
+}
+
+.back-div {
+    padding: 6px;
+    color: white;
+    border-radius: 4px;
+}
+
+.navbar-custom{
+    margin-bottom: 10px;
+    background-color: black;
+    box-shadow: 2px 2px 5px black;
+}

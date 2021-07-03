@@ -1,0 +1,20 @@
+Open the Anaconda Command Prompt then run those command
+
+
+--------------> conda create -n tensorflow_env tensorflow
+
+--------------> conda activate tensorflow_env
+
+--------------> pip install --ignore-installed --upgrade tensorflow
+
+--------------> pip install numpy scipy matplotlib scikit-learn
+
+--------------> pip install opencv-contrib-python
+
+--------------> conda install -c conda-forge dlib
+
+Now Change the directory and run those command.
+
+---------> pip install -r requirements.txt
+
+---------> python run.py

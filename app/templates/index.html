@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+    <!------ Include the above in your HEAD tag ---------->
+    <title>Face Recognition Module</title>
+</head>
+
+<body>
+    <div class="coverphotodiv">
+        <img src="{{ url_for('static', filename='src/cover.png') }}" class="coverphoto" width="1000" alt="cover" />
+    </div>
+
+    <nav class="navbar">
+        <a class="navbar-brand" href="{{url_for('index')}}">
+            <!-- Logo Image -->
+            <img src="{{ url_for('static', filename='src/logo.png') }}" width="100" height="100" alt="logo" />
+            <!-- Logo Text -->
+            <span class="title text-uppercase h1">Face Recognition Module</span>
+        </a>
+        <div>
+            <a href="{{url_for('registered_people')}}">
+                <button class="btn btn-clear" style=" font-size: large; color: dodgerblue;"><b>Known People</b></button>
+            </a>
+        </div>
+    </nav>
+
+    <div>
+        {% if status %}
+        {% if status['status'] == 'success' %}
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if status['status'] == 'failed' %}
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if 'warning' in status %}
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="ml-5 w-75">
+        <div class="row" style="width: 100%; margin-bottom: 0px;">
+            <div class="col-12 border" style="padding: 0px">
+                <div class="back-div" style="background-color: dodgerblue;">
+                    <h5>Register new Person Here !</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%; margin-bottom: 20px;">
+            <div class="col-6 border" style="padding: 0px">
+                <form action="/register_existing_images" method="post" enctype="multipart/form-data"
+                    style="padding: 20px">
+                    <div class="form-group">
+                        <label for="known_face_id">Enter the name of the Person to add to the Database:</label>
+                        <input type="text" class="form-control" id="known_face_id" name="known_face_name" value=""
+                            placeholder="Enter the Person name" aria-describedby="nameHelp" required>
+                        <small id="nameHelp" class="form-text text-muted">This name will be added to the
+                            database</small>
+                    </div>
+                    <br>
+                    <label>Select an image that contains a single face:</label>
+                    <div class="form-group custom-file" style="margin-bottom: 40px;">
+                        <input type="file" class="form-control-file custom-file-input" id="known_face_img_id"
+                            name="known_face_img" accept="image/*" required multiple />
+                        <label class="custom-file-label" for="known_face_img_id">Choose file</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register from Image</button>
+                </form>
+            </div>
+
+            <div class="col-6 border" style="padding: 0px">
+                <form action="/register_capture_images" method="post" enctype="multipart/form-data"
+                    style="padding: 20px">
+                    <div class="form-group">
+                        <label for="known_face_id">Register a new Person from Webcame:</label>
+                        <input type="text" class="form-control" id="known_face_id" name="known_face_name" value=""
+                            placeholder="Enter the Person name" aria-describedby="nameHelp" required>
+                        <small id="nameHelp" class="form-text text-muted">This name will be added to the
+                            database</small>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Register from Webcam</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%; margin-bottom: 20px;">
+            <div class="col-6 border" style="padding: 0px;">
+                <div class="back-div" style="background-color:limegreen ;">
+                    <h5>Recognise Faces Here !</h5>
+                </div>
+                <form action="/inference_webcam" method="post" enctype="multipart/form-data" style="padding: 20px">
+                    <label>Recognise faces in Live Camera:</label>
+                    <br>
+                    <small>Faces appearing in the camera will be detected and recognised !</small>
+                    <br>
+                    <br>
+                    <button type="submit" class="btn btn-success">Run Webcam</button>
+                </form>
+            </div>
+
+            <div class="col-6 border" style="padding: 0px;">
+                <div class="back-div" style="background-color: tomato;">
+                    <h5>Delete a Face Here !</h5>
+                </div>
+                <form action="delete_person" method="post" style="padding: 20px;">
+                    <div class="form-group">
+                        <label for="del_face">Enter Person name to delete from the database</label>
+                        <input type="text" class="form-control" id="del_face" name="del_face_name" value=""
+                            placeholder="Enter Name" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Delete Face</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+</body>
+
+</html>
